@@ -2,7 +2,7 @@ import debug from 'debug';
 import http from 'http';
 
 import { app } from './app.js';
-import { client } from './api/pgsql/dbInit.js';
+import { client } from './pgsql/pgConnection.js';
 
 export const port = process.env.PORT || '3000';
 app.set('port', port);

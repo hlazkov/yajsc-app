@@ -1,7 +1,3 @@
-export const UUID_regexp = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
-
-export const getIdsFromPath = (fullPath) => [...`${fullPath}`.matchAll(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g)].map(arr => arr[0]);
-
 export const error = (message) => ({message});
 
 export const uuid = () => {

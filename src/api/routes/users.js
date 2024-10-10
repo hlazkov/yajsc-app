@@ -1,52 +1,56 @@
 import express from 'express';
-import { usersData } from '../../../data/users.js';
-import { UUID_regexp, error, uuid, getIdsFromPath } from '../../utils.js';
+import { error, uuid } from '../../utils.js';
+import {deleteUser, insertUser, selectAllUsers, selectUserById} from "../../pgsql/users.js";
 
 export const router = express.Router();
 
-router.get('/list', function(req, res, next) {
-  const users = usersData.read();
-  res.status(200).json(users);
+router.get('/list', async (req, res) => {
+  try {
+    const result = await selectAllUsers();
+    res.status(200).json(result.rows);
+  } catch (e) {
+    res.status(500).json(error(`Failed to get users. Error: ${e}`));
+  }
 });
 
-router.post('/', function(req, res, next) {
+router.post('/', async (req, res) => {
   const user = req.body;
   const id = uuid();
 
-  const users = usersData.read();
-  users.push({id, ...user})
-  usersData.write(users);
-
-  res.status(200).json({id, ...user});
-});
-
-router.get(UUID_regexp, function(req, res, next) {
-  const id = getIdsFromPath(req.path).pop();
-  
-  const users = usersData.read();
-  const user = users.find(user => user.id === id);
-
-  if (user) {
-    res.status(200).json(user);
-  } else {
-    res.status(404).json(error(`User with id = ${id} was not found :(`));
+  try {
+    const result = await insertUser(user, id);
+    res.status(200).json({id, ...user});
+  } catch (e) {
+    res.status(500).json(error(`Failed to post user. Error: ${e}`));
   }
 });
 
-router.delete(UUID_regexp, function(req, res, next) {
-  const id = getIdsFromPath(req.path).pop();
-  
-  const users = usersData.read();
-  const user = users.find(user => user.id === id);
+router.get('/:id', async (req, res) => {
+  const id = req.params.id;
 
-  if (user) {
-    users.splice(users.indexOf(user), 1);
-    usersData.write(users);
-    
-    res.status(200).json({result: 'Done!'});
-  } else {
-    res.status(404).json(error(`User with id = ${id} was not found :(`));
+  try {
+    const result = await selectUserById(id);
+    if (result.rows.length) {
+      res.status(200).json(result.rows[0]);
+    } else {
+      res.status(404).json(error(`User by id=${id} not found.`));
+    }
+  } catch (e) {
+    res.status(500).json(error(`Failed to get user by id=${id}. Error: ${e}`));
   }
 });
 
-// module.exports = router;
+router.delete('/:id', async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const result = await deleteUser(id);
+    if (result.rows.length) {
+      res.status(200).json(result.rows[0]);
+    } else {
+      res.status(404).json(error(`User by id=${id} not found.`));
+    }
+  } catch (e) {
+    res.status(500).json(error(`Failed to delete user by id=${id}. Error: ${e}`));
+  }
+});
