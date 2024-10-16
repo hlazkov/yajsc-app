@@ -1,39 +1,39 @@
-import swaggerJsdoc from 'swagger-jsdoc'
-// @ts-ignore
-import swaggerUi from 'swagger-ui-express'
-import {Express} from "express";
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import { Express } from 'express';
+import { config } from './config.ts';
 
 const options = {
   definition: {
     openapi: '3.0.0',
     info: {
       title: 'YAJSC API',
-      description: "API endpoints for YAJSC app service documented on swagger",
-      contact: {
-        name: "Pavlo Hlazkov",
-        email: "anotherskulk@gmail.com",
-        url: "https://github.com/hlazkov"
-      },
+      description: 'API endpoints for YAJSC app service documented on swagger',
+      // contact: {
+      //   name: 'Pavlo Hlazkov',
+      //   email: 'anotherskulk@gmail.com',
+      //   url: 'https://github.com/hlazkov',
+      // },
       version: '0.0.1',
     },
     servers: [
       {
-        url: "http://localhost:8080/",
-        description: "Local server"
+        url: `http://localhost:${config.port}/`,
+        description: 'Local server',
       },
-    ]
+    ],
   },
   // looks for configuration in specified directories
-  apis: ['./router/*.js'],
-}
-export const swaggerSpec = swaggerJsdoc(options)
+  apis: ['**/routes/*.ts'],
+};
+export const swaggerSpec = swaggerJsdoc(options);
 
 export function swaggerDocs(app: Express) {
   // Swagger Page
-  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+  app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
   // Documentation in JSON format
-  app.get('/docs.json', (req, res) => {
-    res.setHeader('Content-Type', 'application/json')
-    res.send(swaggerSpec)
-  })
+  app.get('/swagger.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+  });
 }

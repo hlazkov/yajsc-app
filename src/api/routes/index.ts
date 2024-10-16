@@ -2,9 +2,16 @@ import express from 'express';
 import { client } from '../../pgsql/pgConnection.ts';
 import { message } from '../../utils.ts';
 
-export const router = express.Router();
+export const indexRouter = express.Router();
 
-router.post('/test', async function (req, res) {
+/**
+ * @openapi
+ * /test:
+ *   post:
+ *     summary: post a query right to db
+ *     description: Type a query and try it.
+ */
+indexRouter.post('/test', async function (req, res) {
   try {
     const result = await client.query(req.body.query);
     res.status(200).json(result);

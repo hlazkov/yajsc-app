@@ -23,6 +23,7 @@
     "@types/node": "latest",
     "@types/pg-pool": "latest",
     "@types/swagger-jsdoc": "latest",
+    "@types/swagger-ui-express": "latest",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
     "eslint": "^8.53.0",
