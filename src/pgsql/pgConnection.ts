@@ -3,8 +3,17 @@ import Pool from 'pg-pool';
 
 const pool = new Pool(config.db);
 
-export const createDbConnection = () => pool.connect();
+export const createDbConnection = async () => {
+  // const client = await pool.connect();
+  // client.
+  // debugger;
+};
 
 export const executeQuery = async (query: string) => {
-  return await pool.query(query);
+  const client = await pool.connect();
+  try {
+    return await client.query(query);
+  } finally {
+    client.release();
+  }
 };
