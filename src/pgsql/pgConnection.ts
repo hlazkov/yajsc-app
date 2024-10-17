@@ -1,8 +1,10 @@
-import pg from 'pg';
 import { config } from '../config.ts';
+import Pool from 'pg-pool';
 
-export const client = new pg.Client(config.db);
+const pool = new Pool(config.db);
+
+export const createDbConnection = () => pool.connect();
 
 export const executeQuery = async (query: string) => {
-  return await client.query(query);
+  return await pool.query(query);
 };

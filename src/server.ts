@@ -1,15 +1,15 @@
 import http from 'http';
 
 import { app } from './app.ts';
-import { client } from './pgsql/pgConnection.ts';
 import { config } from './config.ts';
+import { createDbConnection } from './pgsql/pgConnection.ts';
 
 app.set('port', config.port);
 
 const server = http.createServer(app);
 
 server.listen(config.port);
-server.once('listening', () => client.connect());
+server.once('listening', createDbConnection);
 
 server.on('listening', onListening);
 
