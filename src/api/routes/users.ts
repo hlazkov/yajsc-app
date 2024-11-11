@@ -3,6 +3,7 @@ import { message, uuid } from '../../utils.ts';
 import { validateId, ValidationError } from '../validators.ts';
 import { isStudent } from '../../cached/rolesCache.ts';
 import { db } from '../../pgsql/db.helper.ts';
+import { ThreadsCache } from '../../cached/threadsCache.ts';
 
 export const usersRouter = express.Router();
 
@@ -93,8 +94,13 @@ usersRouter.get('/:userId/moveToThread/:threadId', async function (req, res) {
   try {
     const userId = validateId(req.params.userId);
     const threadId = validateId(req.params.threadId);
-    const result = await db.homeworkStatus.setThreadId(userId, threadId);
 
+    // Checking if thread exists:
+    const existingThreads = await ThreadsCache.getInstance();
+    if (!existingThreads.find(thread => thread.id === threadId))
+      throw new ValidationError(`Thread with id ${threadId} not found.`);
+
+    const result = await db.homeworkStatus.setThreadId(userId, threadId);
     res.status(200).json({ data: result });
   } catch (e) {
     if (e instanceof ValidationError) res.status(400).json(message(`Invalid id: ${e}`));
