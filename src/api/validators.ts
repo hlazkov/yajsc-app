@@ -1,4 +1,4 @@
-import { User } from './types.ts';
+import { Thread, User } from './types.ts';
 
 export class ValidationError extends Error {}
 
@@ -9,6 +9,7 @@ export const validateId = (id: string | any, errorMessagePart = 'id') => {
 };
 
 const minimalUsernameLength = 6;
+const minimalNameLength = 6;
 
 export const validateUserBody = (user: object | any) => {
   if (typeof user !== 'object') throw new ValidationError('user must be an object Oo (IDK how have we got here)');
@@ -22,11 +23,22 @@ export const validateUserBody = (user: object | any) => {
     result.roleId = user.roleId;
   else throw new ValidationError(`roleId must be valid uuid`);
 
-  const optionalString = ['firstname', 'lastName', 'phoneNumber', 'email', 'telegram'] as Array<keyof Omit<User, 'id'>>;
+  const optionalString = ['firstName', 'lastName', 'phoneNumber', 'email', 'telegram'] as Array<keyof Omit<User, 'id'>>;
 
   for (const key of optionalString) {
     if (user[key] && typeof user[key] === 'string') result[key] = user[key];
   }
 
   return result as Omit<User, 'id'>;
+};
+
+export const validateThreadBody = (thread: object | any) => {
+  if (typeof thread !== 'object') throw new ValidationError('thread must be an object Oo (IDK how have we got here)');
+  const result = {} as Omit<Thread, 'id'>;
+
+  if (thread.name && typeof thread.name === 'string' && thread.name.length >= minimalNameLength)
+    result.name = thread.name;
+  else throw new ValidationError(`name must be valid string with length of ${minimalNameLength} or more`);
+
+  return result as Omit<Thread, 'id'>;
 };
