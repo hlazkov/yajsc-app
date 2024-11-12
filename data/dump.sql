@@ -84,6 +84,7 @@ SET default_table_access_method = heap;
 CREATE TABLE public.homeworks_status (
     id uuid NOT NULL,
     user_id uuid NOT NULL,
+    thread_id uuid DEFAULT '4663888a-8ed2-4aad-a3ae-6118c23eb100' NOT NULL,
     unit_0 integer DEFAULT 0 NOT NULL,
     unit_1 integer DEFAULT 0 NOT NULL,
     unit_2 integer DEFAULT 0 NOT NULL,
@@ -148,8 +149,8 @@ ALTER TABLE public.thread OWNER TO postgres;
 
 CREATE TABLE public.users (
     id uuid NOT NULL,
-    username character varying NOT NULL,
     role_id uuid NOT NULL,
+    username character varying NOT NULL,
     firstname character varying,
     lastname character varying,
     phone character varying,
@@ -166,7 +167,7 @@ ALTER TABLE public.users OWNER TO postgres;
 -- Data for Name: homeworks_status; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.homeworks_status (id, user_id, unit_0, unit_1, unit_2, unit_3, unit_4, unit_5, unit_6, unit_7, unit_8, unit_9, unit_10) FROM stdin;
+COPY public.homeworks_status (id, user_id, thread_id, unit_0, unit_1, unit_2, unit_3, unit_4, unit_5, unit_6, unit_7, unit_8, unit_9, unit_10) FROM stdin;
 \.
 
 
@@ -188,8 +189,8 @@ COPY public.repo_link (id, user_id, link, comment) FROM stdin;
 
 COPY public.roles (id, name) FROM stdin;
 a9177d9f-31ad-4686-a44e-b784f5791a4f	admin
-946a3850-0dfb-4fe8-8660-cb1eceaeb41c	student
 f099b2bb-f17a-4266-9f0a-57b279e720db	mentor
+946a3850-0dfb-4fe8-8660-cb1eceaeb41c	student
 \.
 
 
@@ -200,6 +201,7 @@ f099b2bb-f17a-4266-9f0a-57b279e720db	mentor
 --
 
 COPY public.thread (id, name) FROM stdin;
+4663888a-8ed2-4aad-a3ae-6118c23eb100	default
 \.
 
 

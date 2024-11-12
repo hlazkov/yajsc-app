@@ -8,3 +8,13 @@ export interface User {
   email?: string;
   telegram?: string;
 }
+
+export interface Role {
+  id: string;
+  name: string;
+}
+
+export interface Thread {
+  id: string;
+  name: string;
+}

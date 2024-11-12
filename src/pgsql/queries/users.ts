@@ -1,6 +1,6 @@
-import { executeQuery } from './pgConnection.ts';
-import { validateUserBody } from '../api/validators.ts';
-import { User } from '../api/types.ts';
+import { executeQuery } from '../pgConnection.ts';
+import { validateUserBody } from '../../api/validators.ts';
+import { User } from '../../api/types.ts';
 
 export const selectAllUsers = async (): Promise<User[]> => {
   const result = await executeQuery(
@@ -39,19 +39,31 @@ export const selectUserById = async (id: string): Promise<User | undefined> => {
 export const insertUser = async (user: object, id: string) => {
   const normalizedUser: User = {
     id,
-    firstName: 'anonymous',
-    lastName: 'anononovich',
+    firstName: '_default',
+    lastName: '_default',
     ...validateUserBody(user),
   };
   const query = `INSERT INTO public.users
-        (id, username, role_id, firstname, lastname, phone, email, telegram)
-        VALUES('${normalizedUser.id}'::uuid, '${normalizedUser.username}', '${normalizedUser.roleId}'::uuid, '${normalizedUser.firstName || 'NULL'}', '${normalizedUser.lastName || 'NULL'}', '${normalizedUser.phoneNumber || 'NULL'}', '${normalizedUser.email || 'NULL'}', '${normalizedUser.telegram || 'NULL'}');`;
-  // TODO remove this once we don't need it
-  console.debug(query);
-  return await executeQuery(query);
+        (id, role_id, username, firstname, lastname, phone, email, telegram)
+        VALUES($1, $2, $3, $4, $5, $6, $7, $8);`;
+  return await executeQuery(query, [
+    normalizedUser.id,
+    normalizedUser.roleId,
+    normalizedUser.username,
+    normalizedUser.firstName,
+    normalizedUser.lastName,
+    normalizedUser.phoneNumber,
+    normalizedUser.email,
+    normalizedUser.telegram,
+  ]);
 };
 
 export const deleteUser = async (id: string): Promise<boolean> => {
   const result = await executeQuery(`DELETE FROM public.users WHERE id='${id}'::uuid;`);
   return !!result.rowCount && result.rowCount > 0;
+};
+
+export const getUsersRoleIdById = async (id: string): Promise<string> => {
+  const result = await executeQuery(`SELECT role_id FROM public.users WHERE id='${id}';`);
+  return result.rows[0]['role_id'];
 };
