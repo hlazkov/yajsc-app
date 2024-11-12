@@ -9,11 +9,6 @@ const options = {
     info: {
       title: 'YAJSC API',
       description: 'API endpoints for YAJSC app service documented on swagger',
-      // contact: {
-      //   name: 'Pavlo Hlazkov',
-      //   email: 'anotherskulk@gmail.com',
-      //   url: 'https://github.com/hlazkov',
-      // },
       version: '0.0.1',
     },
     servers: [
