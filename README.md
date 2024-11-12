@@ -7,9 +7,10 @@ express. It should provide API for educational purposes.
 ### Features:
 
  - [x] Start this project
- - [ ] User management system
- - [ ] Tracking of homeworks progress
- - [ ] Moving students to different streams of a course
+ - [x] User management system
+ - [x] Moving students to different streams of a course
+ - [x] Tracking of homeworks progress
+ - [ ] Setting homeworks progress
  - [ ] Auth with ... ?
  - [ ] Live chat (WS?)
  - [ ] Live integration with github + github actions => check run status, check review status
