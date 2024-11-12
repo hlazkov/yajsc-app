@@ -1,0 +1,267 @@
+{
+	"info": {
+		"_postman_id": "334f7825-a525-4266-810b-cbf0fd6df53a",
+		"name": "app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8983171",
+		"_collection_link": "https://repairtool.postman.co/workspace/Team-Workspace~b3b555cc-5b7d-4ed4-838e-71a8c6b776d6/collection/8983171-334f7825-a525-4266-810b-cbf0fd6df53a?action=share&source=collection_link&creator=8983171"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "users/list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/users/list",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "users/id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/users/e444c050-f83e-496e-b383-0915a75685a2",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"e444c050-f83e-496e-b383-0915a75685a2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "users",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"tester\",\n    \"roleId\": \"a9177d9f-31ad-4686-a44e-b784f5791a4f\",\n    \"firstname\": \"Petryk\",\n    \"lastname\": \"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/users",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "users/id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/users/e444c050-f83e-496e-b383-0915a75685a2",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"e444c050-f83e-496e-b383-0915a75685a2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "users/id/hwStatus",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/users/e444c050-f83e-496e-b383-0915a75685a2",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"e444c050-f83e-496e-b383-0915a75685a2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "users/id/moveTo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/users/5638fe64-e0b7-4328-b2fc-80e957a5f6b2/moveToThread/2cc22cb7-046b-46bc-8da6-7908acb5eadf",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"5638fe64-e0b7-4328-b2fc-80e957a5f6b2",
+								"moveToThread",
+								"2cc22cb7-046b-46bc-8da6-7908acb5eadf"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Threads",
+			"item": [
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/users/list",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/threads/d8af668b-1f8f-4089-af60-8082703fc5fd",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"threads",
+								"d8af668b-1f8f-4089-af60-8082703fc5fd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "_",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Thread #2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/threads",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"threads"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "test",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"SELECT id, username, role_id, firstname, lastname, phone, email, telegram, curator_id FROM public.users;\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/test",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "healthcheck",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"SELECT id, username, role_id, firstname, lastname, phone, email, telegram, curator_id FROM public.users;\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/healthcheck",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"healthcheck"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
