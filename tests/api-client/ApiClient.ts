@@ -54,24 +54,24 @@ export class ApiClient {
         return this.request({ url: path, method: 'POST', data });
       }
 
+    async delete(path: string): AxiosPromise {
+        return this.request({ url: path, method: 'DELETE' });
+    }
     // protected put<T>(path: string, body?: string | object, headers?: object): Response<T> {
     //     return this.instance.put(path, { body, headers });
-    // }
 
+    // }
     //  async patch(path: string, data: ICreateNoteRequest): AxiosPromise {
     //     return this.request({ url: path, method: 'PATCH', data });
-    //   }
 
+    //   }
     // protected patch<T>(path: string, body?: string | object, headers?: object): Response<T> {
     //     return this.instance.patch(path, body, { headers });
+
+
     // }
-
-
     // protected delete<T>(path: string, body?: string | object, headers?: object): Response<T> {
     //     return this.instance.delete(path, { headers, data: body });
     // }
     //
-    //  async delete(path: string): AxiosPromise {
-    //     return this.request({ url: path, method: 'DELETE' });
-    //   }
 }

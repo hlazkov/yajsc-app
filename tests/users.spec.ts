@@ -6,20 +6,18 @@ import {generateUserData} from "./helpers/user-data-generator.ts";
 import {IUser} from "./types.ts";
 import {UserRepository} from "./repositories/userRepository.ts";
 import {DBClient} from "./db-client/DBClient.ts";
-import {Client} from "ts-postgres";
 import {uuid} from "../src/utils.ts";
 
 const usersService = new UsersService();
-let client: Client;
 let userRepository: UserRepository;
+let user: IUser;
 
 beforeAll(async () => {
-    client = await DBClient.createAndConnectClient();
-    userRepository = new UserRepository(client);
+    userRepository = new UserRepository();
 });
 
 afterAll(async () => {
-    await client.end();
+    await DBClient.shutdown();
 });
 
 
@@ -28,12 +26,15 @@ describe('Users endpoints', () => {
         const userData = generateUserData();
         const newUserResponse = await usersService.createUser(userData);
         const createdUserData = newUserResponse.data.data;
+        user = createdUserData;
 
         expect(newUserResponse.status).toBe(200);
         expect(createdUserData.id).toBeDefined();
         expect(createdUserData.username).toEqual(userData.username);
 
         const createdUserFromDB = await userRepository.selectOne(createdUserData.id);
+
+        expect(createdUserFromDB).not.toBeNull();
 
         if (createdUserFromDB !== null) {
             //database types dictate this decision
@@ -111,6 +112,33 @@ describe('Users endpoints', () => {
 
     test('/users/:id GET should return 400 if id is invalid', async () => {
         const response = await usersService.getUserById('invalidId');
+
+        expect(response.status).toBe(400);
+        expect(response.data).toEqual({message: "Invalid id: Error: id must be a valid uuid"});
+    });
+
+    test('/users/:id DELETE should delete user by id', async () => {
+        const usersCountBeforeDelete = (await userRepository.selectAll()).length;
+        const response = await usersService.deleteUser(user.id);
+        const usersCountAfterDelete = (await userRepository.selectAll()).length;
+        const userFromDB = await userRepository.selectOne(user.id);
+
+        expect(response.status).toBe(200);
+        expect(userFromDB).toBeNull();
+        expect(usersCountAfterDelete).toBe(usersCountBeforeDelete - 1);
+    });
+
+    test('/users/:id DELETE should return 404 if user not found', async () => {
+        const randomUUID = uuid();
+        const response = await usersService.deleteUser(randomUUID);
+        console.log(response.data);
+
+        expect(response.status).toBe(404);
+        expect(response.data).toEqual({message: `User by id=${randomUUID} not found.`});
+    });
+
+    test('/users/:id DELETE should return 400 if id is invalid', async () => {
+        const response = await usersService.deleteUser('invalidId');
 
         expect(response.status).toBe(400);
         expect(response.data).toEqual({message: "Invalid id: Error: id must be a valid uuid"});

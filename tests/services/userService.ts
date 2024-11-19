@@ -21,8 +21,7 @@ export class UsersService {
         return this.client.get(`/users/${id}`);
     }
 
-    // async deleteUser(): AxiosPromise<AxiosResponse> {
-    //     return this.client.delete('/users');
-    // }
-
+    async deleteUser(id: string): Promise<AxiosResponse<IApiResponse<null>>> {
+        return this.client.delete(`/users/${id}`);
+    }
 }

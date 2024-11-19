@@ -13,17 +13,14 @@ export interface IUser {
     telegram?: string;
 }
 
-export interface IUserRequest {
-    username: string;
-    roleId: string;
-    firstName?: string;
-    lastName?: string;
-    phoneNumber?: string;
-    email?: string;
-    telegram?: string;
+export type IUserRequest = Omit<IUser, "id">
+
+export interface IHomeworkStatus {
+    id: string;
+    userId: string;
+    threadId: string;
+    unitStatus: number[];
 }
-
-
 
 export interface IRole {
     id: string;
@@ -35,6 +32,7 @@ export interface IThread {
     name: string;
 }
 
+//TODO: move to the roleRepository
 export enum RoleEnum {
     Student = '946a3850-0dfb-4fe8-8660-cb1eceaeb41c',
     Mentor = 'f099b2bb-f17a-4266-9f0a-57b279e720db',
