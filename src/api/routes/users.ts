@@ -56,14 +56,15 @@ usersRouter.delete('/:id', async (req, res) => {
   try {
     id = validateId(req.params.id);
 
-    // removing related homework status
-    const roleId = await db.users.getRole(id);
-    if (await isStudent(roleId)) {
-      await db.homeworkStatus.deleteByUserId(id);
-    }
     const result = await db.users.deleteOne(id);
 
     if (result) {
+      // removing related homework status
+      const roleId = await db.users.getRole(id);
+      if (await isStudent(roleId)) {
+        await db.homeworkStatus.deleteByUserId(id);
+      }
+
       res.status(200).json(message(`User with id=${id} deleted successfully.`));
     } else {
       res.status(404).json(message(`User by id=${id} not found.`));
